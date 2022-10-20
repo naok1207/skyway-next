@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { createElement, createRef, RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Peer, { MeshRoom, RoomStream } from "skyway-js";
 import Video from "../../../components/Video";
 const peer = new Peer({ key: process.env.NEXT_PUBLIC_SKYWAY_API_KEY as string, debug: 3 } )
@@ -7,7 +7,6 @@ const peer = new Peer({ key: process.env.NEXT_PUBLIC_SKYWAY_API_KEY as string, d
 const Room: NextPage = () => {
   const ref = useRef<HTMLVideoElement>(null);
   const [theirStream, setTheirStream] = useState<RoomStream[]>([])
-  const theirsRef = useRef<HTMLDivElement>(null)
   const roomInputRef = useRef<HTMLInputElement>(null)
   const [isJoin, setIsJoin] = useState<boolean>(false)
   const [room, setRoom] = useState<MeshRoom>()
