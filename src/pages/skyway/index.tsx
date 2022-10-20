@@ -15,6 +15,7 @@ const Skyway: NextPage = () => {
         console.error('ref.current not exist')
         return
       }
+      console.log({ ref })
       ref.current.srcObject = stream
       // 2回レンダリングされる際にエラーメッセージが発生する
       ref.current.play().then(() => console.log("video started")).catch(() => console.log("video failed"))
