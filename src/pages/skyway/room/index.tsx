@@ -26,8 +26,10 @@ const Room: NextPage = () => {
     })
   }, [])
 
+
   useEffect(() => {
     if (!room) return
+    // room.removeAllListeners()
     room.once("open", () => {
       console.log("you join room")
       setIsJoin(true)
@@ -35,11 +37,19 @@ const Room: NextPage = () => {
     room.on("peerJoin", (peerId) => {
       console.log(`${peerId} joined`)
     })
-    // room.on("data", ({ src, data }) => {})
+    //
+    room.on("data", ({ src, data }) => {
+      console.log({ src, data })
+    })
     room.on("close", () => {
       console.log("room closed")
       setIsJoin(false)
-    })
+    });
+    () => {
+      reaveRoom()
+      room.removeAllListeners()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room])
 
   useEffect(() => {
@@ -81,6 +91,15 @@ const Room: NextPage = () => {
     return
   }
 
+  const handleSendData = () => {
+    if (!room) return
+    const data = {
+      type: 'text',
+      text: 'sample',
+    }
+    room.send(data)
+  }
+
   return (
     <div>
       <h1>Skyway Mesh Room</h1>
@@ -88,6 +107,7 @@ const Room: NextPage = () => {
         <video ref={ref} width="400px" autoPlay muted playsInline></video>
         <input hidden={isJoin} ref={roomInputRef}></input>
         <button onClick={handleCall}>{isJoin ? "退出" : "発信"}</button>
+        <button className="ml-2" onClick={handleSendData}>データ送信</button>
         <div>
           {theirStream.map((stream) => (
             <Video key={stream.peerId} stream={stream} />
